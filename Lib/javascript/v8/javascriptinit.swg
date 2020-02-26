@@ -70,14 +70,18 @@ extern "C"
 #if (NODE_MODULE_VERSION < 0x000C)
 void SWIGV8_INIT (v8::Handle<v8::Object> exports)
 #else
-void SWIGV8_INIT (v8::Handle<v8::Object> exports, v8::Handle<v8::Object> /*module*/)
+void SWIGV8_INIT (v8::Local<v8::Object> exports, v8::Local<v8::Object> /*module*/)
 #endif
 {
   SWIG_InitializeModule(static_cast<void *>(&exports));
 
   SWIGV8_HANDLESCOPE();
   
+#if (V8_MAJOR_VERSION-0) < 4 && (SWIG_V8_VERSION < 0x031903)
   v8::Handle<v8::Object> exports_obj = exports;
+#else
+  v8::Local<v8::Object> exports_obj = exports;
+#endif
 %}
 
 

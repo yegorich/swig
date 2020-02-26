@@ -25,7 +25,11 @@
 
 /* Javascript types */
 
+#if (V8_MAJOR_VERSION-0) < 4 && (SWIG_V8_VERSION < 0x031903)
 #define SWIG_Object                     v8::Handle<v8::Value>
+#else
+#define SWIG_Object                     v8::Local<v8::Value>
+#endif
 #define VOID_Object                     SWIGV8_UNDEFINED()
 
 /* Overload of the output/constant/exception/dirout handling */

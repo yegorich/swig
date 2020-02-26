@@ -53,7 +53,11 @@ extern "C" JNIEXPORT jint JNICALL Java_native_1directive_native_1directiveJNI_Co
 
 static SwigV8ReturnValue JavaScript_alpha_count(const SwigV8Arguments &args) {
   SWIGV8_HANDLESCOPE();
+#if (V8_MAJOR_VERSION-0) < 4 && (SWIG_V8_VERSION < 0x031903)
   v8::Handle<v8::Value> jsresult;
+#else
+  v8::Local<v8::Value> jsresult;
+#endif
   char *arg1 = (char *)0;
   int res1;
   char *buf1 = 0;

@@ -15,7 +15,11 @@ int placeholder() { return 0; }
     static SwigV8ReturnValue JavaScript_do_work(const SwigV8Arguments &args) {
         SWIGV8_HANDLESCOPE();
         const int MY_MAGIC_NUMBER = 5;
+#if (V8_MAJOR_VERSION-0) < 4 && (SWIG_V8_VERSION < 0x031903)
         v8::Handle<v8::Value> jsresult =
+#else
+        v8::Local<v8::Value> jsresult =
+#endif
             SWIG_From_int(static_cast< int >(MY_MAGIC_NUMBER));
         if (args.Length() != 0)
             SWIG_exception_fail(SWIG_ERROR, "Illegal number of arguments.");

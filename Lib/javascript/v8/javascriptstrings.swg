@@ -4,10 +4,18 @@
  * ------------------------------------------------------------ */
 %fragment("SWIG_AsCharPtrAndSize", "header", fragment="SWIG_pchar_descriptor") {
 SWIGINTERN int
+%#if (V8_MAJOR_VERSION-0) < 4 && (SWIG_V8_VERSION < 0x031903)
 SWIG_AsCharPtrAndSize(v8::Handle<v8::Value> valRef, char** cptr, size_t* psize, int *alloc)
+%#else
+SWIG_AsCharPtrAndSize(v8::Local<v8::Value> valRef, char** cptr, size_t* psize, int *alloc)
+%#endif
 {
   if(valRef->IsString()) {
+%#if (V8_MAJOR_VERSION-0) < 4 && (SWIG_V8_VERSION < 0x031903)
     v8::Handle<v8::String> js_str = SWIGV8_TO_STRING(valRef);
+%#else
+    v8::Local<v8::String> js_str = SWIGV8_TO_STRING(valRef);
+%#endif
 
     size_t len = SWIGV8_UTF8_LENGTH(js_str) + 1;
     char* cstr = new char[len];
@@ -20,7 +28,11 @@ SWIG_AsCharPtrAndSize(v8::Handle<v8::Value> valRef, char** cptr, size_t* psize, 
     return SWIG_OK;
   } else {
     if(valRef->IsObject()) {
+%#if (V8_MAJOR_VERSION-0) < 4 && (SWIG_V8_VERSION < 0x031903)
       v8::Handle<v8::Object> obj = SWIGV8_TO_OBJECT(valRef);
+%#else
+      v8::Local<v8::Object> obj = SWIGV8_TO_OBJECT(valRef);
+%#endif
       // try if the object is a wrapped char[]
       swig_type_info* pchar_descriptor = SWIG_pchar_descriptor();
       if (pchar_descriptor) {
@@ -41,7 +53,11 @@ SWIG_AsCharPtrAndSize(v8::Handle<v8::Value> valRef, char** cptr, size_t* psize, 
 }
 
 %fragment("SWIG_FromCharPtrAndSize","header",fragment="SWIG_pchar_descriptor") {
+%#if (V8_MAJOR_VERSION-0) < 4 && (SWIG_V8_VERSION < 0x031903)
 SWIGINTERNINLINE v8::Handle<v8::Value>
+%#else
+SWIGINTERNINLINE v8::Local<v8::Value>
+%#endif
 SWIG_FromCharPtrAndSize(const char* carray, size_t size)
 {
   if (carray) {
@@ -49,7 +65,11 @@ SWIG_FromCharPtrAndSize(const char* carray, size_t size)
       // TODO: handle extra long strings
       return SWIGV8_UNDEFINED();
     } else {
+%#if (V8_MAJOR_VERSION-0) < 4 && (SWIG_V8_VERSION < 0x031903)
       v8::Handle<v8::String> js_str = SWIGV8_STRING_NEW2(carray, size);
+%#else
+      v8::Local<v8::String> js_str = SWIGV8_STRING_NEW2(carray, size);
+%#endif
       return js_str;
     }
   } else {

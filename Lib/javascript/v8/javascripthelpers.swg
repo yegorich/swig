@@ -21,19 +21,35 @@ typedef v8::PropertyCallbackInfo<void>  SwigV8PropertyCallbackInfoVoid;
 /**
  * Creates a class template for a class with specified initialization function.
  */
+#if (V8_MAJOR_VERSION-0) < 4 && (SWIG_V8_VERSION < 0x031903)
 SWIGRUNTIME v8::Handle<v8::FunctionTemplate> SWIGV8_CreateClassTemplate(const char* symbol) {
+#else
+SWIGRUNTIME v8::Local<v8::FunctionTemplate> SWIGV8_CreateClassTemplate(const char* symbol) {
+#endif
     SWIGV8_HANDLESCOPE_ESC();
     
     v8::Local<v8::FunctionTemplate> class_templ = SWIGV8_FUNCTEMPLATE_NEW_VOID();
     class_templ->SetClassName(SWIGV8_SYMBOL_NEW(symbol));
 
+#if (V8_MAJOR_VERSION-0) < 4 && (SWIG_V8_VERSION < 0x031903)
     v8::Handle<v8::ObjectTemplate> inst_templ = class_templ->InstanceTemplate();
+#else
+    v8::Local<v8::ObjectTemplate> inst_templ = class_templ->InstanceTemplate();
+#endif
     inst_templ->SetInternalFieldCount(1);
 
+#if (V8_MAJOR_VERSION-0) < 4 && (SWIG_V8_VERSION < 0x031903)
     v8::Handle<v8::ObjectTemplate> equals_templ = class_templ->PrototypeTemplate();
+#else
+    v8::Local<v8::ObjectTemplate> equals_templ = class_templ->PrototypeTemplate();
+#endif
     equals_templ->Set(SWIGV8_SYMBOL_NEW("equals"), SWIGV8_FUNCTEMPLATE_NEW(_SWIGV8_wrap_equals));
 
+#if (V8_MAJOR_VERSION-0) < 4 && (SWIG_V8_VERSION < 0x031903)
     v8::Handle<v8::ObjectTemplate> cptr_templ = class_templ->PrototypeTemplate();
+#else
+    v8::Local<v8::ObjectTemplate> cptr_templ = class_templ->PrototypeTemplate();
+#endif
     cptr_templ->Set(SWIGV8_SYMBOL_NEW("getCPtr"), SWIGV8_FUNCTEMPLATE_NEW(_wrap_getCPtr));
 
     SWIGV8_ESCAPE(class_templ);
@@ -42,34 +58,62 @@ SWIGRUNTIME v8::Handle<v8::FunctionTemplate> SWIGV8_CreateClassTemplate(const ch
 /**
  * Registers a class method with given name for a given class template.
  */
+#if (V8_MAJOR_VERSION-0) < 4 && (SWIG_V8_VERSION < 0x031903)
 SWIGRUNTIME void SWIGV8_AddMemberFunction(v8::Handle<v8::FunctionTemplate> class_templ, const char* symbol,
   SwigV8FunctionCallback _func) {
+#else
+SWIGRUNTIME void SWIGV8_AddMemberFunction(v8::Local<v8::FunctionTemplate> class_templ, const char* symbol,
+  SwigV8FunctionCallback _func) {
+#endif
+#if (V8_MAJOR_VERSION-0) < 4 && (SWIG_V8_VERSION < 0x031903)
     v8::Handle<v8::ObjectTemplate> proto_templ = class_templ->PrototypeTemplate();
+#else
+    v8::Local<v8::ObjectTemplate> proto_templ = class_templ->PrototypeTemplate();
+#endif
     proto_templ->Set(SWIGV8_SYMBOL_NEW(symbol), SWIGV8_FUNCTEMPLATE_NEW(_func));
 }
 
 /**
  * Registers a class property with given name for a given class template.
  */
+#if (V8_MAJOR_VERSION-0) < 4 && (SWIG_V8_VERSION < 0x031903)
 SWIGRUNTIME void SWIGV8_AddMemberVariable(v8::Handle<v8::FunctionTemplate> class_templ, const char* symbol,
   SwigV8AccessorGetterCallback getter, SwigV8AccessorSetterCallback setter) {
+#else
+SWIGRUNTIME void SWIGV8_AddMemberVariable(v8::Local<v8::FunctionTemplate> class_templ, const char* symbol,
+  SwigV8AccessorGetterCallback getter, SwigV8AccessorSetterCallback setter) {
+#endif
+#if (V8_MAJOR_VERSION-0) < 4 && (SWIG_V8_VERSION < 0x031903)
   v8::Handle<v8::ObjectTemplate> proto_templ = class_templ->InstanceTemplate();
+#else
+  v8::Local<v8::ObjectTemplate> proto_templ = class_templ->InstanceTemplate();
+#endif
   proto_templ->SetAccessor(SWIGV8_SYMBOL_NEW(symbol), getter, setter);
 }
 
 /**
  * Registers a class method with given name for a given object.
  */
+#if (V8_MAJOR_VERSION-0) < 4 && (SWIG_V8_VERSION < 0x031903)
 SWIGRUNTIME void SWIGV8_AddStaticFunction(v8::Handle<v8::Object> obj, const char* symbol,
   const SwigV8FunctionCallback& _func) {
+#else
+SWIGRUNTIME void SWIGV8_AddStaticFunction(v8::Local<v8::Object> obj, const char* symbol,
+  const SwigV8FunctionCallback& _func) {
+#endif
   obj->Set(SWIGV8_SYMBOL_NEW(symbol), SWIGV8_FUNCTEMPLATE_NEW(_func)->GetFunction());
 }
 
 /**
  * Registers a class method with given name for a given object.
  */
+#if (V8_MAJOR_VERSION-0) < 4 && (SWIG_V8_VERSION < 0x031903)
 SWIGRUNTIME void SWIGV8_AddStaticVariable(v8::Handle<v8::Object> obj, const char* symbol,
   SwigV8AccessorGetterCallback getter, SwigV8AccessorSetterCallback setter) {
+#else
+SWIGRUNTIME void SWIGV8_AddStaticVariable(v8::Local<v8::Object> obj, const char* symbol,
+  SwigV8AccessorGetterCallback getter, SwigV8AccessorSetterCallback setter) {
+#endif
 #if (V8_MAJOR_VERSION-0) < 5
   obj->SetAccessor(SWIGV8_SYMBOL_NEW(symbol), getter, setter);
 #else

@@ -163,7 +163,11 @@ public:
         SWIGV8_THROW_EXCEPTION(err);
     }
   }
+#if (V8_MAJOR_VERSION-0) < 4 && (SWIG_V8_VERSION < 0x031903)
   v8::Handle<v8::Value> err;
+#else
+  v8::Local<v8::Value> err;
+#endif
 };
 
 /* ---------------------------------------------------------------------------
@@ -228,7 +232,11 @@ public:
 
 SWIGRUNTIME v8::Persistent<v8::FunctionTemplate> SWIGV8_SWIGTYPE_Proxy_class_templ;
 
+#if (V8_MAJOR_VERSION-0) < 4 && (SWIG_V8_VERSION < 0x031903)
 SWIGRUNTIME int SWIG_V8_ConvertInstancePtr(v8::Handle<v8::Object> objRef, void **ptr, swig_type_info *info, int flags) {
+#else
+SWIGRUNTIME int SWIG_V8_ConvertInstancePtr(v8::Local<v8::Object> objRef, void **ptr, swig_type_info *info, int flags) {
+#endif
   SWIGV8_HANDLESCOPE();
 
   if(objRef->InternalFieldCount() < 1) return SWIG_ERROR;
@@ -280,11 +288,19 @@ SWIGRUNTIME void SWIGV8_Proxy_DefaultDtor(const v8::WeakCallbackInfo<SWIGV8_Prox
   delete proxy;
 }
 
+#if (V8_MAJOR_VERSION-0) < 4 && (SWIG_V8_VERSION < 0x031903)
 SWIGRUNTIME int SWIG_V8_GetInstancePtr(v8::Handle<v8::Value> valRef, void **ptr) {
+#else
+SWIGRUNTIME int SWIG_V8_GetInstancePtr(v8::Local<v8::Value> valRef, void **ptr) {
+#endif
   if(!valRef->IsObject()) {
     return SWIG_TypeError;
   }
+#if (V8_MAJOR_VERSION-0) < 4 && (SWIG_V8_VERSION < 0x031903)
   v8::Handle<v8::Object> objRef = SWIGV8_TO_OBJECT(valRef);
+#else
+  v8::Local<v8::Object> objRef = SWIGV8_TO_OBJECT(valRef);
+#endif
 
   if(objRef->InternalFieldCount() < 1) return SWIG_ERROR;
 
@@ -304,7 +320,11 @@ SWIGRUNTIME int SWIG_V8_GetInstancePtr(v8::Handle<v8::Value> valRef, void **ptr)
   return SWIG_OK;
 }
 
+#if (V8_MAJOR_VERSION-0) < 4 && (SWIG_V8_VERSION < 0x031903)
 SWIGRUNTIME void SWIGV8_SetPrivateData(v8::Handle<v8::Object> obj, void *ptr, swig_type_info *info, int flags) {
+#else
+SWIGRUNTIME void SWIGV8_SetPrivateData(v8::Local<v8::Object> obj, void *ptr, swig_type_info *info, int flags) {
+#endif
   SWIGV8_Proxy *cdata = new SWIGV8_Proxy();
   cdata->swigCObject = ptr;
   cdata->swigCMemOwn = (flags & SWIG_POINTER_OWN) ? 1 : 0;
@@ -367,7 +387,11 @@ SWIGRUNTIME void SWIGV8_SetPrivateData(v8::Handle<v8::Object> obj, void *ptr, sw
 
 }
 
+#if (V8_MAJOR_VERSION-0) < 4 && (SWIG_V8_VERSION < 0x031903)
 SWIGRUNTIME int SWIG_V8_ConvertPtr(v8::Handle<v8::Value> valRef, void **ptr, swig_type_info *info, int flags) {
+#else
+SWIGRUNTIME int SWIG_V8_ConvertPtr(v8::Local<v8::Value> valRef, void **ptr, swig_type_info *info, int flags) {
+#endif
   SWIGV8_HANDLESCOPE();
   
   /* special case: JavaScript null => C NULL pointer */
@@ -378,14 +402,26 @@ SWIGRUNTIME int SWIG_V8_ConvertPtr(v8::Handle<v8::Value> valRef, void **ptr, swi
   if(!valRef->IsObject()) {
     return SWIG_TypeError;
   }
+#if (V8_MAJOR_VERSION-0) < 4 && (SWIG_V8_VERSION < 0x031903)
   v8::Handle<v8::Object> objRef = SWIGV8_TO_OBJECT(valRef);
+#else
+  v8::Local<v8::Object> objRef = SWIGV8_TO_OBJECT(valRef);
+#endif
   return SWIG_V8_ConvertInstancePtr(objRef, ptr, info, flags);
 }
 
+#if (V8_MAJOR_VERSION-0) < 4 && (SWIG_V8_VERSION < 0x031903)
 SWIGRUNTIME v8::Handle<v8::Value> SWIG_V8_NewPointerObj(void *ptr, swig_type_info *info, int flags) {
+#else
+SWIGRUNTIME v8::Local<v8::Value> SWIG_V8_NewPointerObj(void *ptr, swig_type_info *info, int flags) {
+#endif
   SWIGV8_HANDLESCOPE_ESC();
   
+#if (V8_MAJOR_VERSION-0) < 4 && (SWIG_V8_VERSION < 0x031903)
   v8::Handle<v8::FunctionTemplate> class_templ;
+#else
+  v8::Local<v8::FunctionTemplate> class_templ;
+#endif
 
   if (ptr == NULL) {
 #if (V8_MAJOR_VERSION-0) < 4 && (SWIG_V8_VERSION < 0x031903)
@@ -433,7 +469,11 @@ SWIGRUNTIME v8::Handle<v8::Value> SWIG_V8_NewPointerObj(void *ptr, swig_type_inf
 SWIGRUNTIME SwigV8ReturnValue _SWIGV8_wrap_equals(const SwigV8Arguments &args) {
   SWIGV8_HANDLESCOPE();
   
+#if (V8_MAJOR_VERSION-0) < 4 && (SWIG_V8_VERSION < 0x031903)
   v8::Handle<v8::Value> jsresult;
+#else
+  v8::Local<v8::Value> jsresult;
+#endif
   void *arg1 = (void *) 0 ;
   void *arg2 = (void *) 0 ;
   bool result;
@@ -463,7 +503,11 @@ fail:
 SWIGRUNTIME SwigV8ReturnValue _wrap_getCPtr(const SwigV8Arguments &args) {
   SWIGV8_HANDLESCOPE();
   
+#if (V8_MAJOR_VERSION-0) < 4 && (SWIG_V8_VERSION < 0x031903)
   v8::Handle<v8::Value> jsresult;
+#else
+  v8::Local<v8::Value> jsresult;
+#endif
   void *arg1 = (void *) 0 ;
   long result;
   int res1;
@@ -502,10 +546,18 @@ public:
 };
 
 SWIGRUNTIMEINLINE
+#if (V8_MAJOR_VERSION-0) < 4 && (SWIG_V8_VERSION < 0x031903)
 int SwigV8Packed_Check(v8::Handle<v8::Value> valRef) {
+#else
+int SwigV8Packed_Check(v8::Local<v8::Value> valRef) {
+#endif
   SWIGV8_HANDLESCOPE();
   
+#if (V8_MAJOR_VERSION-0) < 4 && (SWIG_V8_VERSION < 0x031903)
   v8::Handle<v8::Object> objRef = SWIGV8_TO_OBJECT(valRef);
+#else
+  v8::Local<v8::Object> objRef = SWIGV8_TO_OBJECT(valRef);
+#endif
   if(objRef->InternalFieldCount() < 1) return false;
 #if (V8_MAJOR_VERSION-0) < 5
   v8::Handle<v8::Value> flag = objRef->GetHiddenValue(SWIGV8_STRING_NEW("__swig__packed_data__"));
@@ -519,13 +571,21 @@ int SwigV8Packed_Check(v8::Handle<v8::Value> valRef) {
 }
 
 SWIGRUNTIME
+#if (V8_MAJOR_VERSION-0) < 4 && (SWIG_V8_VERSION < 0x031903)
 swig_type_info *SwigV8Packed_UnpackData(v8::Handle<v8::Value> valRef, void *ptr, size_t size) {
+#else
+swig_type_info *SwigV8Packed_UnpackData(v8::Local<v8::Value> valRef, void *ptr, size_t size) {
+#endif
   if (SwigV8Packed_Check(valRef)) {
     SWIGV8_HANDLESCOPE();
     
     SwigV8PackedData *sobj;
 
+#if (V8_MAJOR_VERSION-0) < 4 && (SWIG_V8_VERSION < 0x031903)
     v8::Handle<v8::Object> objRef = SWIGV8_TO_OBJECT(valRef);
+#else
+    v8::Local<v8::Object> objRef = SWIGV8_TO_OBJECT(valRef);
+#endif
 
 #if (V8_MAJOR_VERSION-0) < 4 && (SWIG_V8_VERSION < 0x031511)
     v8::Handle<v8::Value> cdataRef = objRef->GetInternalField(0);
@@ -542,7 +602,11 @@ swig_type_info *SwigV8Packed_UnpackData(v8::Handle<v8::Value> valRef, void *ptr,
 }
 
 SWIGRUNTIME
+#if (V8_MAJOR_VERSION-0) < 4 && (SWIG_V8_VERSION < 0x031903)
 int SWIGV8_ConvertPacked(v8::Handle<v8::Value> valRef, void *ptr, size_t sz, swig_type_info *ty) {
+#else
+int SWIGV8_ConvertPacked(v8::Local<v8::Value> valRef, void *ptr, size_t sz, swig_type_info *ty) {
+#endif
   swig_type_info *to = SwigV8Packed_UnpackData(valRef, ptr, sz);
   if (!to) return SWIG_ERROR;
   if (ty) {
@@ -590,7 +654,11 @@ SWIGRUNTIME void _wrap_SwigV8PackedData_delete(const v8::WeakCallbackInfo<SwigV8
 }
 
 SWIGRUNTIME
+#if (V8_MAJOR_VERSION-0) < 4 && (SWIG_V8_VERSION < 0x031903)
 v8::Handle<v8::Value> SWIGV8_NewPackedObj(void *data, size_t size, swig_type_info *type) {
+#else
+v8::Local<v8::Value> SWIGV8_NewPackedObj(void *data, size_t size, swig_type_info *type) {
+#endif
   SWIGV8_HANDLESCOPE_ESC();
 
   SwigV8PackedData *cdata = new SwigV8PackedData(data, size, type);
@@ -657,7 +725,7 @@ SWIGRUNTIME
 #if (V8_MAJOR_VERSION-0) < 4 && (SWIG_V8_VERSION < 0x031903)
 v8::Handle<v8::Value> SWIGV8_AppendOutput(v8::Handle<v8::Value> result, v8::Handle<v8::Value> obj) {
 #else
-v8::Handle<v8::Value> SWIGV8_AppendOutput(v8::Local<v8::Value> result, v8::Handle<v8::Value> obj) {
+v8::Local<v8::Value> SWIGV8_AppendOutput(v8::Local<v8::Value> result, v8::Local<v8::Value> obj) {
 #endif
   SWIGV8_HANDLESCOPE_ESC();
   
