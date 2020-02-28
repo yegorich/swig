@@ -343,7 +343,12 @@ fail:
   $jsmangledname_class_0->SetCallHandler($jsctor);
   $jsmangledname_class_0->Inherit($jsmangledname_class);
   $jsmangledname_class_0->SetHiddenPrototype(true);
+#if (SWIG_V8_VERSION < 0x0705)
+  $jsmangledname_class_0->SetHiddenPrototype(true);
   v8::Local<v8::Object> $jsmangledname_obj = $jsmangledname_class_0->GetFunction();
+#else
+  v8::Local<v8::Object> $jsmangledname_obj = $jsmangledname_class_0->GetFunction(SWIGV8_CURRENT_CONTEXT()).ToLocalChecked();
+#endif
 %}
 
 /* -----------------------------------------------------------------------------

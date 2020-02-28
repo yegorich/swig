@@ -5,7 +5,11 @@
 
 // First v8 version that uses "SetWeak" and not "MakeWeak"
 
+#if (SWIG_V8_VERSION < 0x0706)
 #define SWIGV8_STRING_NEW2(cstr, len) v8::String::NewFromUtf8(v8::Isolate::GetCurrent(), cstr, v8::String::kNormalString, len)
+#else
+#define SWIGV8_STRING_NEW2(cstr, len) (v8::String::NewFromUtf8(v8::Isolate::GetCurrent(), cstr, v8::NewStringType::kNormal, len)).ToLocalChecked()
+#endif
 
 typedef void SwigV8ReturnValue;
 typedef v8::FunctionCallbackInfo<v8::Value> SwigV8Arguments;
@@ -17,11 +21,20 @@ typedef v8::PropertyCallbackInfo<v8::Value> SwigV8PropertyCallbackInfo;
 #define SWIGV8_HANDLESCOPE_ESC() v8::EscapableHandleScope scope(v8::Isolate::GetCurrent());
 #define SWIGV8_ESCAPE(val) return scope.Escape(val)
 
+#if (SWIG_V8_VERSION < 0x0706)
 #define SWIGV8_ADJUST_MEMORY(size) v8::Isolate::GetCurrent()->AdjustAmountOfExternalAllocatedMemory(size)
 #define SWIGV8_CURRENT_CONTEXT() v8::Isolate::GetCurrent()->GetCurrentContext()
 #define SWIGV8_THROW_EXCEPTION(err) v8::Isolate::GetCurrent()->ThrowException(err)
-#define SWIGV8_STRING_NEW(str) v8::String::NewFromUtf8(v8::Isolate::GetCurrent(), str)
-#define SWIGV8_SYMBOL_NEW(sym) v8::String::NewFromUtf8(v8::Isolate::GetCurrent(), sym)
+#define SWIGV8_STRING_NEW(str) v8::String::NewFromUtf8(v8::Isolate::GetCurrent(), str, v8::String::kNormalString)
+#define SWIGV8_SYMBOL_NEW(sym) v8::String::NewFromUtf8(v8::Isolate::GetCurrent(), sym, v8::String::kNormalString)
+#else
+#define SWIGV8_ADJUST_MEMORY(size) v8::Isolate::GetCurrent()->AdjustAmountOfExternalAllocatedMemory(size)
+#define SWIGV8_CURRENT_CONTEXT() v8::Isolate::GetCurrent()->GetCurrentContext()
+#define SWIGV8_THROW_EXCEPTION(err) v8::Isolate::GetCurrent()->ThrowException(err)
+#define SWIGV8_STRING_NEW(str) (v8::String::NewFromUtf8(v8::Isolate::GetCurrent(), str, v8::NewStringType::kNormal)).ToLocalChecked()
+#define SWIGV8_SYMBOL_NEW(sym) (v8::String::NewFromUtf8(v8::Isolate::GetCurrent(), sym, v8::NewStringType::kNormal)).ToLocalChecked()
+#endif
+
 
 #define SWIGV8_ARRAY_NEW() v8::Array::New(v8::Isolate::GetCurrent())
 #define SWIGV8_BOOLEAN_NEW(bool) v8::Boolean::New(v8::Isolate::GetCurrent(), bool)
@@ -219,7 +232,12 @@ SWIGRUNTIME void SWIGV8_SetPrivateData(v8::Local<v8::Object> obj, void *ptr, swi
     cdata->handle.SetWeak(cdata, SWIGV8_Proxy_DefaultDtor, v8::WeakCallbackType::kParameter);
   }
 
+#if (SWIG_V8_VERSION < 0x0706)
   cdata->handle.MarkIndependent();
+// Looks like future versions do not require that anymore:
+// https://monorail-prod.appspot.com/p/chromium/issues/detail?id=923361#c11
+#endif
+
 }
 
 SWIGRUNTIME int SWIG_V8_ConvertPtr(v8::Local<v8::Value> valRef, void **ptr, swig_type_info *info, int flags) {
@@ -255,7 +273,12 @@ SWIGRUNTIME v8::Local<v8::Value> SWIG_V8_NewPointerObj(void *ptr, swig_type_info
     class_templ = v8::Local<v8::FunctionTemplate>::New(isolate, SWIGV8_SWIGTYPE_Proxy_class_templ);
   }
 
+#if (SWIG_V8_VERSION < 0x0705)
   v8::Local<v8::Object> result = class_templ->InstanceTemplate()->NewInstance();
+#else
+  v8::Local<v8::Object> result = class_templ->InstanceTemplate()->NewInstance(SWIGV8_CURRENT_CONTEXT()).ToLocalChecked();
+#endif
+
   SWIGV8_SetPrivateData(result, ptr, info, flags);
 
   SWIGV8_ESCAPE(result);
@@ -411,7 +434,11 @@ v8::Local<v8::Value> SWIGV8_NewPackedObj(void *data, size_t size, swig_type_info
 
   cdata->handle.SetWeak(cdata, _wrap_SwigV8PackedData_delete, v8::WeakCallbackType::kParameter);
 
+#if (SWIG_V8_VERSION < 0x0706)
   cdata->handle.MarkIndependent();
+// Looks like future versions do not require that anymore:
+// https://monorail-prod.appspot.com/p/chromium/issues/detail?id=923361#c11
+#endif
 
   SWIGV8_ESCAPE(obj);
 }
@@ -434,7 +461,11 @@ v8::Local<v8::Value> SWIGV8_AppendOutput(v8::Local<v8::Value> result, v8::Local<
     result = SWIGV8_ARRAY_NEW();
   }
   v8::Local<v8::Array> arr = v8::Local<v8::Array>::Cast(result);
+#if (SWIG_V8_VERSION < 0x0706)
   arr->Set(arr->Length(), obj);
+#else
+  arr->Set(SWIGV8_CURRENT_CONTEXT(), arr->Length(), obj);
+#endif
 
   SWIGV8_ESCAPE(arr);
 }

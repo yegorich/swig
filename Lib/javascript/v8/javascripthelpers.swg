@@ -49,7 +49,13 @@ SWIGRUNTIME void SWIGV8_AddMemberVariable(v8::Local<v8::FunctionTemplate> class_
  */
 SWIGRUNTIME void SWIGV8_AddStaticFunction(v8::Local<v8::Object> obj, const char* symbol,
   const SwigV8FunctionCallback& _func) {
+#if (SWIG_V8_VERSION < 0x0705)
   obj->Set(SWIGV8_SYMBOL_NEW(symbol), SWIGV8_FUNCTEMPLATE_NEW(_func)->GetFunction());
+#elif (SWIG_V8_VERSION < 0x0706)
+  obj->Set(SWIGV8_SYMBOL_NEW(symbol), SWIGV8_FUNCTEMPLATE_NEW(_func)->GetFunction(SWIGV8_CURRENT_CONTEXT()).ToLocalChecked());
+#else
+  obj->Set(SWIGV8_CURRENT_CONTEXT(), SWIGV8_SYMBOL_NEW(symbol), SWIGV8_FUNCTEMPLATE_NEW(_func)->GetFunction(SWIGV8_CURRENT_CONTEXT()).ToLocalChecked());
+#endif
 }
 
 /**
