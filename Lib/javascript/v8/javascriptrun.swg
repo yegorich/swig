@@ -75,6 +75,7 @@ typedef v8::PropertyCallbackInfo<v8::Value> SwigV8PropertyCallbackInfo;
 #define SWIGV8_NUMBER_NEW(num) v8::Number::New(num)
 #define SWIGV8_OBJECT_NEW() v8::Object::New()
 #define SWIGV8_UNDEFINED() v8::Undefined()
+#define SWIGV8_OBJECT v8::Handle<v8::Value>
 #define SWIGV8_NULL() v8::Null()
 #else
 #define SWIGV8_ARRAY_NEW() v8::Array::New(v8::Isolate::GetCurrent())
@@ -88,6 +89,7 @@ typedef v8::PropertyCallbackInfo<v8::Value> SwigV8PropertyCallbackInfo;
 #define SWIGV8_NUMBER_NEW(num) v8::Number::New(v8::Isolate::GetCurrent(), num)
 #define SWIGV8_OBJECT_NEW() v8::Object::New(v8::Isolate::GetCurrent())
 #define SWIGV8_UNDEFINED() v8::Undefined(v8::Isolate::GetCurrent())
+#define SWIGV8_OBJECT v8::Local<v8::Value>
 #define SWIGV8_NULL() v8::Null(v8::Isolate::GetCurrent())
 #endif
 
