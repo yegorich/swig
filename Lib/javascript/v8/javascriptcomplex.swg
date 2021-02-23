@@ -19,8 +19,13 @@ SWIG_From_dec(Type)(%ifcplusplus(const Type&, Type) c)
 
   v8::Local<v8::Array> vals = SWIGV8_ARRAY_NEW();
 
+#if (SWIG_V8_VERSION < 0x1114)
   vals->Set(0, SWIG_From(double)(Real(c)));
   vals->Set(1, SWIG_From(double)(Imag(c)));
+#else
+  vals->Set(SWIGV8_CURRENT_CONTEXT(), 0, SWIG_From(double)(Real(c)));
+  vals->Set(SWIGV8_CURRENT_CONTEXT(), 1, SWIG_From(double)(Imag(c)));
+#endif
   SWIGV8_ESCAPE(vals);
 }
 }
@@ -43,12 +48,20 @@ SWIG_AsVal_dec(Type) (SWIGV8_VALUE o, Type* val)
     double re, im;
     int res;
 
+#if (SWIG_V8_VERSION < 0x1114)
     res = SWIG_AsVal(double)(array->Get(0), &re);
+#else
+    res = SWIG_AsVal(double)(array->Get(SWIGV8_CURRENT_CONTEXT(), 0).ToLocalChecked(), &re);
+#endif
     if(!SWIG_IsOK(res)) {
       return SWIG_TypeError;
     }
     
+#if (SWIG_V8_VERSION < 0x1114)
     res = SWIG_AsVal(double)(array->Get(1), &im);
+#else
+    res = SWIG_AsVal(double)(array->Get(SWIGV8_CURRENT_CONTEXT(), 1).ToLocalChecked(), &im);
+#endif
     if(!SWIG_IsOK(res)) {
       return SWIG_TypeError;
     }
@@ -85,12 +98,20 @@ SWIG_AsVal_dec(Type) (SWIGV8_VALUE o, Type* val)
     double re, im;
     int res;
 
+#if (SWIG_V8_VERSION < 0x1114)
     res = SWIG_AsVal(double)(array->Get(0), &re);
+#else
+    res = SWIG_AsVal(double)(array->Get(SWIGV8_CURRENT_CONTEXT(), 0).ToLocalChecked(), &re);
+#endif
     if(!SWIG_IsOK(res)) {
       return SWIG_TypeError;
     }
-    
+
+#if (SWIG_V8_VERSION < 0x1114)    
     res = SWIG_AsVal(double)(array->Get(1), &im);
+#else
+    res = SWIG_AsVal(double)(array->Get(SWIGV8_CURRENT_CONTEXT(), 1).ToLocalChecked(), &im);
+#endif
     if(!SWIG_IsOK(res)) {
       return SWIG_TypeError;
     }
